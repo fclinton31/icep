@@ -1,0 +1,74 @@
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+CREATE TABLE `customer` (
+  `custID` varchar(16) NOT NULL,
+  `idNumber` varchar(14) NOT NULL,
+  `FirstName` varchar(50) NOT NULL,
+  `Surname` varchar(50) NOT NULL,
+  `Gender` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `CellNumber` varchar(12) NOT NULL,
+  `createDate` varchar(10) DEFAULT NULL,
+  `role` varchar(50) NOT NULL DEFAULT 'customer',
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `password` varchar(10) NOT NULL,
+  `username` varchar(15) NOT NULL,
+  `logged_On` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `staffmember` (
+  `staffID` varchar(15) NOT NULL,
+  `idNumber` varchar(15) NOT NULL,
+  `Firstname` varchar(25) NOT NULL,
+  `Surname` varchar(35) NOT NULL,
+  `Email` varchar(25) NOT NULL,
+  `Gender` varchar(10) NOT NULL,
+  `username` varchar(13) NOT NULL,
+  `password` varchar(13) NOT NULL,
+  `role` varchar(10) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `logged_On` tinyint(1) NOT NULL
+ ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `appointment` (
+  `id` int(10) NOT NULL,
+  `date` varchar(10) NOT NULL,
+  `time` varchar(10) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `patientId`varchar(15) NOT NULL,
+  `doctorId` varchar(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+INSERT INTO `staffmember` (`staffID`, `idNumber`, `Firstname`, `Surname`, `Email`, `Gender`, `username`, `password`, `role`, `active`, `logged_On`) VALUES
+('980327', '9803275804084', 'doctor', 'doctor', 'doctor', 'doctor', 'doctor', 'doctor', 'Admin', 1, 0);
+
+ALTER TABLE `appointment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `doctorId` (`doctorId`),
+  ADD KEY `patientId` (`patientId`);
+
+
+ALTER TABLE `staffmember`
+  ADD PRIMARY KEY (`staffID`);
+
+
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`custID`);
+
+
+ALTER TABLE `appointment`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+
+ALTER TABLE `appointment`
+  ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`doctorId`) REFERENCES `staffmember` (`staffID`),
+  ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`patientId`) REFERENCES `customer` (`custID`);
+
+COMMIT;
+
